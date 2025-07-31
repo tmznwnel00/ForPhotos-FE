@@ -115,42 +115,40 @@ const TitleSection = styled.div`
   padding: 16px 0;
 `;
 
-const Title = styled.h1`
+const BackButton = styled.button`
+  background: none;
+  border: none;
   font-size: 24px;
-  font-weight: 700;
+  cursor: pointer;
   color: #333;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Title = styled.h1`
+  font-size: 20px;
+  font-weight: 600;
+  color: #ff6b9d;
   margin: 0;
   flex: 1;
   text-align: center;
 `;
 
-const SearchIcon = styled.div`
-  width: 20px;
-  height: 20px;
+const StarIcon = styled.div`
+  width: 24px;
+  height: 24px;
   position: relative;
   cursor: pointer;
+  color: #ffd700;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &::before {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 8px;
-    height: 8px;
-    border: 2px solid #666;
-    border-radius: 50%;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 6px;
-    height: 2px;
-    background-color: #666;
-    transform: rotate(45deg);
-    transform-origin: top left;
+    content: '★';
   }
 `;
 
@@ -169,9 +167,9 @@ const Header = () => {
         </StatusIcons>
       </StatusBar>
       <TitleSection>
-        <div></div>
-        <Title>프레임</Title>
-        <SearchIcon />
+        <BackButton>←</BackButton>
+        <Title>프레임 선택</Title>
+        <StarIcon />
       </TitleSection>
     </HeaderContainer>
   );
