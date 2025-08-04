@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import Header from './components/Header';
 import FilterBar from './components/FilterBar';
 import FrameCard from './components/FrameCard';
+import BottomNavigation from './components/BottomNavigation';
+import PoseRecommendation from './pages/PoseRecommendation';
+import FilterEncyclopedia from './pages/FilterEncyclopedia';
+import PhotoBoothMap from './pages/PhotoBoothMap';
+import MusicRecommendation from './pages/MusicRecommendation';
 
 const AppContainer = styled.div`
   max-width: 480px;
@@ -10,6 +15,8 @@ const AppContainer = styled.div`
   background-color: #ffffff;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
 `;
 
 const Content = styled.div`
@@ -58,10 +65,10 @@ const FrameGrid = styled.div`
   padding: 16px;
 `;
 
-const App = () => {
+const HomePage = () => {
+  const [layoutMode, setLayoutMode] = useState('grid');
   const [selectedMainCategory, setSelectedMainCategory] = useState('brand');
   const [selectedSubCategory, setSelectedSubCategory] = useState('disney');
-  const [layoutMode, setLayoutMode] = useState('grid');
 
   const mainCategories = [
     { id: 'life', label: '인생네컷' },
@@ -114,7 +121,7 @@ const App = () => {
   ];
 
   return (
-    <AppContainer>
+    <>
       <Header />
       <FilterBar
         mainCategories={mainCategories}
@@ -150,6 +157,37 @@ const App = () => {
           ))}
         </FrameGrid>
       </Content>
+    </>
+  );
+};
+
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <HomePage />;
+      case 'pose':
+        return <PoseRecommendation />;
+      case 'filter':
+        return <FilterEncyclopedia />;
+      case 'map':
+        return <PhotoBoothMap />;
+      case 'music':
+        return <MusicRecommendation />;
+      default:
+        return <HomePage />;
+    }
+  };
+
+  return (
+    <AppContainer>
+      {renderPage()}
+      <BottomNavigation 
+        currentPage={currentPage} 
+        onPageChange={setCurrentPage} 
+      />
     </AppContainer>
   );
 };

@@ -7,10 +7,11 @@ const NavContainer = styled.nav`
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 414px;
+  max-width: 480px;
   background-color: #ffffff;
   border-top: 1px solid #e0e0e0;
   padding: 8px 0;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   z-index: 100;
 `;
 
@@ -44,135 +45,37 @@ const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.isActive ? '#007bff' : '#666'};
+  color: ${props => props.isActive ? '#ff6b9d' : '#666'};
+  font-size: 20px;
 `;
 
 const Label = styled.span`
   font-size: 10px;
-  color: ${props => props.isActive ? '#007bff' : '#666'};
+  color: ${props => props.isActive ? '#ff6b9d' : '#666'};
   font-weight: ${props => props.isActive ? '600' : '400'};
 `;
 
-const HomeIcon = styled(Icon)`
-  &::before {
-    content: '';
-    width: 16px;
-    height: 14px;
-    background-color: currentColor;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  }
-`;
-
-const FolderIcon = styled(Icon)`
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 16px;
-    height: 12px;
-    border: 2px solid currentColor;
-    border-radius: 2px;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 12px;
-    height: 8px;
-    border: 2px solid currentColor;
-    border-radius: 1px;
-  }
-`;
-
-const AddIcon = styled(Icon)`
-  &::before {
-    content: '';
-    width: 16px;
-    height: 2px;
-    background-color: currentColor;
-    position: absolute;
-  }
-  
-  &::after {
-    content: '';
-    width: 2px;
-    height: 16px;
-    background-color: currentColor;
-    position: absolute;
-  }
-`;
-
-const BookmarkIcon = styled(Icon)`
-  &::before {
-    content: '';
-    width: 16px;
-    height: 20px;
-    border: 2px solid currentColor;
-    border-radius: 2px 2px 0 0;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 6px solid currentColor;
-  }
-`;
-
-const ProfileIcon = styled(Icon)`
-  &::before {
-    content: '';
-    width: 16px;
-    height: 16px;
-    border: 2px solid currentColor;
-    border-radius: 50%;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 4px;
-    background-color: currentColor;
-    border-radius: 0 0 4px 4px;
-  }
-`;
-
-const BottomNavigation = () => {
+const BottomNavigation = ({ currentPage, onPageChange }) => {
   const navItems = [
-    { id: 'home', label: '홈', icon: HomeIcon, isActive: true },
-    { id: 'folders', label: '폴더', icon: FolderIcon, isActive: false },
-    { id: 'add', label: '추가', icon: AddIcon, isActive: false },
-    { id: 'bookmarks', label: '저장', icon: BookmarkIcon, isActive: false },
-    { id: 'profile', label: '마이', icon: ProfileIcon, isActive: false }
+    { id: 'home', label: '홈', icon: '🏠', isActive: currentPage === 'home' },
+    { id: 'pose', label: '포즈', icon: '📸', isActive: currentPage === 'pose' },
+    { id: 'filter', label: '필터', icon: '🎨', isActive: currentPage === 'filter' },
+    { id: 'map', label: '지도', icon: '🗺️', isActive: currentPage === 'map' },
+    { id: 'music', label: '음악', icon: '🎵', isActive: currentPage === 'music' }
   ];
 
   return (
     <NavContainer>
       <NavList>
-        {navItems.map((item) => {
-          const IconComponent = item.icon;
-          return (
-            <NavItem key={item.id}>
-              <IconComponent isActive={item.isActive} />
-              <Label isActive={item.isActive}>{item.label}</Label>
-            </NavItem>
-          );
-        })}
+        {navItems.map((item) => (
+          <NavItem 
+            key={item.id}
+            onClick={() => onPageChange(item.id)}
+          >
+            <Icon isActive={item.isActive}>{item.icon}</Icon>
+            <Label isActive={item.isActive}>{item.label}</Label>
+          </NavItem>
+        ))}
       </NavList>
     </NavContainer>
   );
