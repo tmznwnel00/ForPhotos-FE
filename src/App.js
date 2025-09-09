@@ -7,7 +7,11 @@ import BottomNavigation from './components/BottomNavigation';
 import PoseRecommendation from './pages/PoseRecommendation';
 import FilterEncyclopedia from './pages/FilterEncyclopedia';
 import PhotoBoothMap from './pages/PhotoBoothMap';
-import MusicRecommendation from './pages/MusicRecommendation';
+import PhotoMusicRecommendation from './pages/PhotoMusicRecommendation';
+import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
+import GalleryPage from './pages/GalleryPage';
+import CameraPage from './pages/CameraPage';
 
 const AppContainer = styled.div`
   max-width: 480px;
@@ -65,7 +69,51 @@ const FrameGrid = styled.div`
   padding: 16px;
 `;
 
-const HomePage = () => {
+const QuickActions = styled.div`
+  padding: 16px;
+  background-color: #f8f9fa;
+`;
+
+const QuickActionsTitle = styled.h2`
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px 0;
+`;
+
+const QuickActionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+`;
+
+const QuickActionButton = styled.button`
+  background: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+`;
+
+const QuickActionIcon = styled.div`
+  font-size: 24px;
+  margin-bottom: 8px;
+`;
+
+const QuickActionLabel = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+`;
+
+const HomePage = ({ onPageChange }) => {
   const [layoutMode, setLayoutMode] = useState('grid');
   const [selectedMainCategory, setSelectedMainCategory] = useState('brand');
   const [selectedSubCategory, setSelectedSubCategory] = useState('disney');
@@ -120,6 +168,17 @@ const HomePage = () => {
     }
   ];
 
+  const quickActions = [
+    { id: 'camera', icon: '📷', label: '카메라' },
+    { id: 'gallery', icon: '🖼️', label: '갤러리' },
+    { id: 'pose', icon: '📸', label: '포즈' },
+    { id: 'filter', icon: '🎨', label: '필터' },
+    { id: 'map', icon: '🗺️', label: '지도' },
+    { id: 'music', icon: '🎵', label: 'AI음악' },
+    { id: 'profile', icon: '👤', label: '마이' },
+    { id: 'settings', icon: '⚙️', label: '설정' }
+  ];
+
   return (
     <>
       <Header />
@@ -150,6 +209,22 @@ const HomePage = () => {
           최신순▽
         </SortButton>
       </LayoutControls>
+      
+      <QuickActions>
+        <QuickActionsTitle>빠른 메뉴</QuickActionsTitle>
+        <QuickActionsGrid>
+          {quickActions.map(action => (
+            <QuickActionButton 
+              key={action.id}
+              onClick={() => onPageChange(action.id)}
+            >
+              <QuickActionIcon>{action.icon}</QuickActionIcon>
+              <QuickActionLabel>{action.label}</QuickActionLabel>
+            </QuickActionButton>
+          ))}
+        </QuickActionsGrid>
+      </QuickActions>
+      
       <Content>
         <FrameGrid>
           {frames.map(frame => (
@@ -163,11 +238,22 @@ const HomePage = () => {
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = (formData) => {
+    console.log('로그인:', formData);
+    setIsLoggedIn(true);
+    setCurrentPage('home');
+  };
 
   const renderPage = () => {
+    if (!isLoggedIn) {
+      return <LoginPage onLogin={handleLogin} />;
+    }
+
     switch (currentPage) {
       case 'home':
-        return <HomePage />;
+        return <HomePage onPageChange={setCurrentPage} />;
       case 'pose':
         return <PoseRecommendation />;
       case 'filter':
@@ -175,19 +261,27 @@ const App = () => {
       case 'map':
         return <PhotoBoothMap />;
       case 'music':
-        return <MusicRecommendation />;
+        return <PhotoMusicRecommendation />;
+      case 'profile':
+        return <ProfilePage />;
+      case 'gallery':
+        return <GalleryPage />;
+      case 'camera':
+        return <CameraPage />;
       default:
-        return <HomePage />;
+        return <HomePage onPageChange={setCurrentPage} />;
     }
   };
 
   return (
     <AppContainer>
       {renderPage()}
-      <BottomNavigation 
-        currentPage={currentPage} 
-        onPageChange={setCurrentPage} 
-      />
+      {isLoggedIn && (
+        <BottomNavigation 
+          currentPage={currentPage} 
+          onPageChange={setCurrentPage} 
+        />
+      )}
     </AppContainer>
   );
 };

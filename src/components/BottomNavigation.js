@@ -58,10 +58,10 @@ const Label = styled.span`
 const BottomNavigation = ({ currentPage, onPageChange }) => {
   const navItems = [
     { id: 'home', label: '홈', icon: '🏠', isActive: currentPage === 'home' },
-    { id: 'pose', label: '포즈', icon: '📸', isActive: currentPage === 'pose' },
-    { id: 'filter', label: '필터', icon: '🎨', isActive: currentPage === 'filter' },
+    { id: 'camera', label: '카메라', icon: '📷', isActive: currentPage === 'camera' },
+    { id: 'gallery', label: '갤러리', icon: '🖼️', isActive: currentPage === 'gallery' },
     { id: 'map', label: '지도', icon: '🗺️', isActive: currentPage === 'map' },
-    { id: 'music', label: '음악', icon: '🎵', isActive: currentPage === 'music' }
+    { id: 'profile', label: '마이', icon: '👤', isActive: currentPage === 'profile' }
   ];
 
   return (

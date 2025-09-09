@@ -190,7 +190,6 @@ const ActionButton = styled.button`
 `;
 
 const PhotoBoothMap = () => {
-  const [selectedFilter, setSelectedFilter] = useState('all');
 
   const photoBooths = [
     {

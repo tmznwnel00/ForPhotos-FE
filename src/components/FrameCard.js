@@ -112,12 +112,12 @@ const ThemeIcon = styled.div`
 `;
 
 const FrameCard = ({ frame }) => {
-  const [isLiked, setIsLiked] = useState(frame.isLiked);
+  // const [isLiked, setIsLiked] = useState(frame.isLiked);
 
-  const handleLike = (e) => {
-    e.stopPropagation();
-    setIsLiked(!isLiked);
-  };
+  // const handleLike = (e) => {
+  //   e.stopPropagation();
+  //   setIsLiked(!isLiked);
+  // };
 
   const renderPhotoSlots = () => {
     return Array.from({ length: 8 }, (_, i) => (
